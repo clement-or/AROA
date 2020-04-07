@@ -34,7 +34,11 @@ ipcRenderer.on('data-received', function(event, data) {
 
     layout: {
       name: 'cose',
-      animate: false
+      animate: false,
+      stop: function() {
+        document.getElementById('load-overlay').style.display = "none";
+        console.log("Layout loading finished");
+      }
     }
 
   });

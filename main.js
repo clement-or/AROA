@@ -16,9 +16,9 @@ function initApp() {
   // Get data
   const data = model.loadOdsToCyto('data-new.ods'),
   // Feed it to renderer
-  win = renderer.render('graph.html', data);
+  win = renderer.render('graph', data);
   // Open dev tools
-  win.webContents.openDevTools();
+  //win.webContents.openDevTools();
 }
 
 app.whenReady().then(initApp);

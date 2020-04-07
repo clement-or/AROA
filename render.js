@@ -28,16 +28,16 @@ function replaceText(selector, text) {
 
 /**
 * Renders the specified file using Mustache
-* @param file File path
+* @param viewName Name of the view, will automatically resolve file path
 * @param data Data to put in the renderer
 * @param win The window in which to render. If not specified, creates a new window
 * @param width Width (default 800px)
 * @param height Height (default 800px)
 * @return The BrowserWindow object
 */
-module.exports.render = function(file, data, win=null, width=800, height=800) {
+module.exports.render = function(viewName, data, win=null, width=800, height=800) {
   // Auto locate in views folder
-  file = "./views/"+file;
+  file = `./views/${viewName}/${viewName}.html`;
 
   // If win has been specified, just load, instead create a new window
   if (win == null)
