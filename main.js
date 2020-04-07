@@ -1,29 +1,23 @@
 const electron = require("electron"),
-{ app, BrowserWindow } = require('electron'),
-xlsx = require("xlsx");
-
-function createWindow (w, h, path) {
-  // Cree la fenetre du navigateur.
-  const win = new BrowserWindow({
-    width: w,
-    height: h,
-    webPreferences: {
-      nodeIntegration: true
-    }
-  });
-
-  // et charger le fichier index.html de l'application.
-  win.loadFile(path)
-  return win;
-}
+{ app, BrowserWindow, ipcMain } = require('electron'),
+// Custom modules
+model = require('./models/model.js'),
+renderer = require('./render.js');
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   app.quit()
 });
 
+/**
+* Function called when app is started
+*/
 function initApp() {
-  const win = createWindow(800, 800, 'views/display.html');
+  // Get data
+  const data = model.loadOdsToCyto('data-new.ods'),
+  // Feed it to renderer
+  win = renderer.render('graph.html', data);
+  // Open dev tools
   win.webContents.openDevTools();
 }
 
