@@ -18,7 +18,7 @@ function initApp() {
   // Feed it to renderer
   win = renderer.render('graph', data);
   // Open dev tools
-  //win.webContents.openDevTools();
+  win.webContents.openDevTools();
 }
 
 app.whenReady().then(initApp);

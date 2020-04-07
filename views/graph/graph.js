@@ -1,7 +1,9 @@
 const cytoscape = require("cytoscape"),
-{ ipcRenderer } = require("electron");
+{ ipcRenderer } = require("electron"),
+{ graphStyle } = require("./graph-style.js");
 
 ipcRenderer.on('data-received', function(event, data) {
+
 
   const cy = cytoscape({
     container: document.getElementById('render'),
@@ -9,28 +11,7 @@ ipcRenderer.on('data-received', function(event, data) {
 
     elements: data,
 
-    style: [ // the stylesheet for the graph
-      {
-        selector: 'node',
-        style: {
-          'width': 50,
-          'height': 50,
-          'background-color': '#666',
-          'label': 'data(id)',
-        }
-      },
-
-      {
-        selector: 'edge',
-        style: {
-          'width': 3,
-          'line-color': '#ccc',
-          'target-arrow-color': '#ccc',
-          'target-arrow-shape': 'triangle',
-
-        }
-      }
-    ],
+    style: graphStyle,
 
     layout: {
       name: 'cose',
@@ -42,5 +23,6 @@ ipcRenderer.on('data-received', function(event, data) {
     }
 
   });
+
 
 });
