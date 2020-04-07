@@ -1,7 +1,7 @@
 const xlsx = require("xlsx");
 const cytoscape = require("cytoscape");
 
-var doc = xlsx.readFile('data.ods').Sheets.Sheet1;
+var doc = xlsx.readFile('data-new.ods').Sheets.Sheet1;
 //document.getElementById("content").innerHTML = JSON.stringify(workbook.Sheets.Sheet1, null, 4);
 
 // Let's construct data for nodes
@@ -25,6 +25,30 @@ for (i = 0; i < 26; i++) {
 }
 
 // Then create connexions
+const alreadyCreatedConnexions = [];
+for (i = 0; i < 26; i++) {
+  const letter = String.fromCharCode(97 + i).toUpperCase();
+  const nextLetter = String.fromCharCode(97 + i + 1).toUpperCase();
+
+  for (n = 0; n < 412; n++) {
+    // Get this anime and the one to the right
+    let anime = doc[letter+n];
+    let connectedAnime = doc[nextLetter+n];
+
+    // If they both exist
+    if (anime != null && connectedAnime != null) {
+      // Create connexion
+      let connexion = {data: {id: anime.v + " to " + connectedAnime.v,
+                              source: anime.v,
+                              target: connectedAnime.v }};
+      // Check if connexion has already been made
+      if (alreadyCreatedConnexions.indexOf(connexion.data.id) == -1) {
+        data.push(connexion);
+        alreadyCreatedConnexions.push(connexion.data.id);
+      }
+    }
+  }
+}
 
 // Then render shit
 
@@ -38,8 +62,11 @@ const cy = cytoscape({
     {
       selector: 'node',
       style: {
+        'width': 50,
+        'height': 50,
         'background-color': '#666',
-        'label': 'data(id)'
+        'label': 'data(id)',
+        'background-image': '../proto-icon.jpg'
       }
     },
 
@@ -49,16 +76,15 @@ const cy = cytoscape({
         'width': 3,
         'line-color': '#ccc',
         'target-arrow-color': '#ccc',
-        'target-arrow-shape': 'triangle'
+        'target-arrow-shape': 'triangle',
+
       }
     }
   ],
 
   layout: {
-    name: 'grid',
-    rows: 1
+    name: 'cose',
+    animate: false
   }
 
 });
-
-document.getElementById("render").style.background = "whitesmoke";
