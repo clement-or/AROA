@@ -36,6 +36,10 @@ Distributed under the XYZ license. See ``LICENSE`` for more information.
 
 [https://github.com/yourname/github-link](https://github.com/dbader/)
 
+## Layout credit
+
+M. Belviranli, A. Dilek and U. Dogrusoz, "CiSE: A Circular Spring Embedder Layout Algorithm" in IEEE Transactions on Visualization & Computer Graphics, vol. 19, no. 06, pp. 953-966, 2013.
+
 ## Contributing
 
 1. Fork it (<https://github.com/yourname/yourproject/fork>)

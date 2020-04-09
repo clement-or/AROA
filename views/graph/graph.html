@@ -1,7 +1,14 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="graph.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://kit.fontawesome.com/437665b312.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../../styles/css/graph.css">
+    <link rel="stylesheet" href="../../styles/css/fontawesome.min.css">
   </head>
+
   <body>
     <div id="load-overlay">
       <div>
@@ -10,7 +17,13 @@
       <p>Loading awesome anime graph...</p>
     </div>
 
-    <div id="render">
+    <div id="graph-render">
+    </div>
+
+    <div id="action-bar" class="box is-hidden">
+      <a class="icon">
+        <i class="fas fa-project-diagram"></i>
+      </a>
     </div>
 
     <script src="graph.js"></script>
