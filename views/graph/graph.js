@@ -1,11 +1,17 @@
 const { ipcRenderer } = require("electron"),
+fs = require("fs"),
+path = require("path"),
 
-{ graphStyle, layoutOptions } = require("./graph-style.js"),
+layoutOptions = require("./graph-layout-options.js"),
 
 cytoscape = require("cytoscape"),
 lay = require('cytoscape-dagre');
 
+// Use the custom layout
 cytoscape.use(lay);
+
+// Load the graph CSS as a string
+const graphStyle = fs.readFileSync(path.resolve(__dirname, 'graph-style.css'), 'utf8');
 
 ipcRenderer.on('data-received', function(event, data) {
 

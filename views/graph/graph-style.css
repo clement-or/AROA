@@ -1,0 +1,31 @@
+node {
+  label: data(title);
+
+  shape : round-rectangle;
+  width: label;
+  height: label;
+
+  background-color:  #666;
+
+  padding: 5px;
+
+  color: whitesmoke;
+  text-wrap: wrap;
+  text-justification: center;
+  text-max-width: 300px;
+  text-halign: center;
+  text-valign: center;
+  font-size: 40;
+}
+
+node:selected {
+  background-color: #2d2d2d;
+}
+
+edge {
+   width: 10;
+   line-color: #ccc;
+   target-arrow-color: red;
+   target-arrow-shape: triangle;
+   arrow-scale: 10;
+}
