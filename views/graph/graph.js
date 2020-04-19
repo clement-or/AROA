@@ -1,9 +1,13 @@
-const cytoscape = require("cytoscape"),
-{ ipcRenderer } = require("electron"),
+const { ipcRenderer } = require("electron"),
+
 { graphStyle, layoutOptions } = require("./graph-style.js"),
-lay = require('cytoscape-dagre');
+
+cytoscape = require("cytoscape"),
+lay = require('cytoscape-dagre'),
+dblClick = require('cytoscape-dblclick');
 
 cytoscape.use(lay);
+cytoscape.use(dblClick);
 
 ipcRenderer.on('data-received', function(event, data) {
 
@@ -19,25 +23,49 @@ ipcRenderer.on('data-received', function(event, data) {
     layout: {
       name: 'dagre',
       animate: false,
-      rankDir: 'TB'
+      rankDir: 'TB',
+      stop: onGraphReady()
     }
   });
 
-  /*
-  // Snap to grid
-  snapToGrid(cy.nodes(), 100, 100);
+  // On click (TODO : dblclick)
+  cy.nodes().on("click", e => editNode(e.target));
+});
 
-  // Setup event listeners
-  cy.nodes().on('dragfree', (e) => {
-    snapToGrid(new Array(e.target), 100, 100);
+/** Handlers **/
+
+function editNode(node) {
+  // Get DOM elements
+  const editModal = document.getElementById("edit-modal"),
+  nodeNameInput = document.getElementById("edit-modal--node-title"),
+  nodeIdInput = document.getElementById("edit-modal--node-id"),
+  saveButton = editModal.querySelector('.button.is-success');
+
+  // Show title in input field
+  nodeNameInput.value = node.data("title");
+  nodeIdInput.value = node.id();
+  // Open modal
+  openModal(editModal);
+
+  // On save, save value and quit modal
+  saveButton.addEventListener("click", function _listener(evt) {
+    node.data("title", nodeNameInput.value);
+
+    saveButton.removeEventListener("click", _listener);
+    closeModal(editModal);
   });
-  */
+}
+
+
+/** UTILS **/
+
+function onGraphReady() {
+  // Hide loading and show UI
   document.getElementById('load-overlay').style.display = "none";
   document.querySelectorAll('.is-hidden').forEach(elt => {
     elt.classList.remove('is-hidden');
   });
-  console.log("Layout loading finished");
-});
+}
 
 function snapToGrid(nodes, gridX, gridY) {
   // Snap nodes to grid
@@ -51,4 +79,12 @@ function snapToGrid(nodes, gridX, gridY) {
 
     node.position(pos);
   });
+}
+
+function openModal(modal) {
+  modal.classList.add('is-active');
+}
+
+function closeModal(modal) {
+  modal.classList.remove('is-active');
 }

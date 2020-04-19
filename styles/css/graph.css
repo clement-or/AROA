@@ -9483,23 +9483,34 @@ body {
 }
 #action-bar {
   position: absolute;
-  top: calc(50vh - 24px);
+  top: calc(50vh - 48px);
   left: 24px;
-  height: 48px;
   width: 48px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 12px;
 }
 #action-bar .box {
   width: 100%;
 }
 #action-bar a {
+  height: 36px;
   color: black;
 }
 #action-bar a:hover, #action-bar a.selected {
   color: #2E51A2;
+}
+
+#search-bar {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+#search-bar input {
+  color: gray;
 }
 
 /*# sourceMappingURL=graph.css.map */

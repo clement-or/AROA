@@ -2,7 +2,7 @@ module.exports.graphStyle = [ // the stylesheet for the graph
   {
     selector: 'node',
     style: {
-      'label': 'data(id)',
+      'label': 'data(title)',
 
       'shape' : 'round-rectangle',
       'width': 'label',

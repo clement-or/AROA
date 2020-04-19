@@ -1,4 +1,5 @@
-const xlsx = require("xlsx");
+const xlsx = require("xlsx"),
+uuid = require("uuid").v4;
 
 /**
 * Load ODS to data and parse it to Cytoscape JS format (JSON)
@@ -17,9 +18,15 @@ module.exports.loadOdsToCyto = function(file, lineNb=412) {
     for (n = 0; n < 412; n++) {
       // Get anime and check if it has already been created
       let anime = doc[letter+n];
+
       if (anime != null)
         if (alreadyCreatedAnimes.indexOf(anime.v) == -1) {
-          data.push({data: {id: anime.v}});
+          // Generate unique ID
+          data.push({data: {
+            id: uuid(),
+            title: anime.v,
+          }});
+
           alreadyCreatedAnimes.push(anime.v)
         }
     }
@@ -38,10 +45,19 @@ module.exports.loadOdsToCyto = function(file, lineNb=412) {
 
       // If they both exist
       if (anime != null && connectedAnime != null) {
+        // Find anime's id in the data
+        let animeId = data.find(node => node.data.title == anime.v).data.id;
+        let connectedAnimeId = data.find(node => node.data.title == connectedAnime.v).data.id;
+
+        //console.log(`Anime ID : ${animeId} / Connected AID : ${connectedAnimeId}`);
+
         // Create connexion
-        let connexion = {data: {id: anime.v + " to " + connectedAnime.v,
-                                source: anime.v,
-                                target: connectedAnime.v }};
+        let connexion = {data: {
+          id: anime.v + " to " + connectedAnime.v,
+          source: animeId,
+          target: connectedAnimeId
+        }};
+
         // Check if connexion has already been made
         if (alreadyCreatedConnexions.indexOf(connexion.data.id) == -1) {
           data.push(connexion);
