@@ -23,6 +23,13 @@ module.exports.graphStyle = [ // the stylesheet for the graph
   },
 
   {
+    selector: 'node:selected',
+    style: {
+      "background-color": "#2d2d2d"
+    }
+  },
+
+  {
     selector: 'edge',
     style: {
       'width': 10,

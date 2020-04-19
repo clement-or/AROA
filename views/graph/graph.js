@@ -3,11 +3,9 @@ const { ipcRenderer } = require("electron"),
 { graphStyle, layoutOptions } = require("./graph-style.js"),
 
 cytoscape = require("cytoscape"),
-lay = require('cytoscape-dagre'),
-dblClick = require('cytoscape-dblclick');
+lay = require('cytoscape-dagre');
 
 cytoscape.use(lay);
-cytoscape.use(dblClick);
 
 ipcRenderer.on('data-received', function(event, data) {
 
@@ -28,8 +26,25 @@ ipcRenderer.on('data-received', function(event, data) {
     }
   });
 
+  // Register double click event because dblclick doesn't work
+  let tappedBefore, tappedTimeout;
+  cy.on('tap', function(event) {
+    var tappedNow = event.target;
+    if (tappedTimeout && tappedBefore) {
+      clearTimeout(tappedTimeout);
+    }
+    if(tappedBefore === tappedNow) {
+      tappedNow.trigger('dblclick');
+      tappedBefore = null;
+    } else {
+      tappedTimeout = setTimeout(function(){ tappedBefore = null; }, 300);
+      tappedBefore = tappedNow;
+    }
+  });
+
   // On click (TODO : dblclick)
-  cy.nodes().on("click", e => editNode(e.target));
+  cy.nodes().on("dblclick", e => editNode(e.target));
+  cy.nodes().on("dblclick", e => console.log("Double click !"));
 });
 
 /** Handlers **/

@@ -10,55 +10,71 @@
   </head>
 
   <body>
-    <div id="app">
-      <div id="load-overlay">
-        <div>
-          <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-        </div>
-        <p>Loading awesome anime graph...</p>
+    <div id="load-overlay">
+      <div>
+        <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       </div>
+      <p>Loading awesome anime graph...</p>
+    </div>
 
-      <div class="modal" id="edit-modal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Edit Node</p>
-            <button class="delete close-modal aria-label="close" data-modal="edit-modal"></button>
-          </header>
-          <section class="modal-card-body">
-            <label for="node-id">ID</label>
-            <input type="text" id="edit-modal--node-id" class="input" readonly>
+    <div class="modal" id="edit-modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Edit Node</p>
+          <button class="delete close-modal" aria-label="close" data-modal="edit-modal"></button>
+        </header>
+        <section class="modal-card-body">
+          <label for="node-id">ID</label>
+          <input type="text" id="edit-modal--node-id" class="input" readonly>
 
-            <label for="edit-modal--node-title">Title</label>
-            <input id="edit-modal--node-title" class="input" type="text" placeholder="Text input" />
-          </section>
-          <footer class="modal-card-foot">
-            <button class="button is-success">Save changes</button>
-            <button class="button close-modal" data-modal="edit-modal">Cancel</button>
-          </footer>
-        </div>
+          <label for="edit-modal--node-title">Title</label>
+          <input id="edit-modal--node-title" class="input" type="text" placeholder="Text input" />
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success">Save changes</button>
+          <button class="button close-modal" data-modal="edit-modal">Cancel</button>
+        </footer>
       </div>
+    </div>
 
-      <div id="graph-render">
+    <div class="modal" id="create-modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Create Node</p>
+          <button class="delete close-modal" aria-label="close" data-modal="create-modal"></button>
+        </header>
+        <section class="modal-card-body">
+          <label for="create-modal--node-title">Title</label>
+          <input id="create-modal--node-title" class="input" type="text" placeholder="Anime title" />
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success">Save changes</button>
+          <button class="button close-modal" data-modal="create-modal">Cancel</button>
+        </footer>
       </div>
+    </div>
 
-      <div id="action-bar" class="box is-hidden">
-        <a class="icon selected">
-          <i class="fas fa-mouse-pointer"></i>
-        </a>
-        <a class="icon">
-          <i class="fas fa-project-diagram"></i>
-        </a>
-      </div>
+    <div id="graph-render">
+    </div>
 
-      <div class="field is-hidden" id="search-bar">
-        <p class="control has-icons-left" class="is-dark">
-          <input class="input" type="text" placeholder="Search..." class="is-dark">
-          <span class="icon is-small is-left">
-            <i class="fas fa-search"></i>
-          </span>
-        </p>
-      </div>
+    <div id="action-bar" class="box is-hidden">
+      <a class="icon selected">
+        <i class="fas fa-mouse-pointer"></i>
+      </a>
+      <a class="icon">
+        <i class="fas fa-project-diagram"></i>
+      </a>
+    </div>
+
+    <div class="field is-hidden" id="search-bar">
+      <p class="control has-icons-left" class="is-dark">
+        <input class="input" type="text" placeholder="Search..." class="is-dark">
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+      </p>
     </div>
 
     <script>
