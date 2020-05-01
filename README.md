@@ -2,6 +2,7 @@
 > Anime relation graph creator. 
 
 AROA aims to create graphs that represent relations, references etc, of different animes. (Can work with other data too).
+It is built using Electron and Cytoscape JS.
 
 This is a work in progress.
 
@@ -19,6 +20,12 @@ Here be dragons.
 git clone https://github.com/clement-or/AROA
 cd AROA 
 npm install
+```
+
+To run it 
+
+```
+npm start
 ```
 
 ## License
