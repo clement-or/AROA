@@ -1,6 +1,7 @@
 const { ipcRenderer } = require("electron"),
 fs = require("fs"),
 path = require("path"),
+uuid = require("uuid").v4,
 
 layoutOptions = require("./graph-layout-options.js"),
 
@@ -12,6 +13,8 @@ cytoscape.use(lay);
 
 // Load the graph CSS as a string
 const graphStyle = fs.readFileSync(path.resolve(__dirname, 'graph-style.css'), 'utf8');
+
+let mode = "default";
 
 ipcRenderer.on('data-received', function(event, data) {
 
@@ -32,6 +35,31 @@ ipcRenderer.on('data-received', function(event, data) {
     }
   });
 
+  // Set listeners
+  updateListeners(cy);
+
+  // Change mode (action bar)
+  document.querySelectorAll("#action-bar > a").forEach(elt => {
+    elt.addEventListener("click", e => {
+      if (e.target.classList.contains("selected")) return;
+
+      document.querySelector("#action-bar > .selected")
+      .classList.remove("selected");
+
+      e.target.classList.add("selected");
+      mode = e.target.dataset.mode;
+
+      updateListeners(cy);
+    });
+  });
+
+  // Delete node
+  document.addEventListener("keydown", e => deleteNode(e, cy));
+});
+
+function updateListeners(cy) {
+  cy.removeAllListeners();
+
   // Register double click event because dblclick doesn't work
   let tappedBefore, tappedTimeout;
   cy.on('tap', function(event) {
@@ -40,18 +68,27 @@ ipcRenderer.on('data-received', function(event, data) {
       clearTimeout(tappedTimeout);
     }
     if(tappedBefore === tappedNow) {
-      tappedNow.trigger('dblclick');
       tappedBefore = null;
+      tappedNow.trigger('dblclick', [
+        event.renderedPosition
+      ]);
     } else {
       tappedTimeout = setTimeout(function(){ tappedBefore = null; }, 300);
       tappedBefore = tappedNow;
     }
   });
 
-  // On click (TODO : dblclick)
-  cy.nodes().on("dblclick", e => editNode(e.target));
-  cy.nodes().on("dblclick", e => console.log("Double click !"));
-});
+  if (mode == "default") {
+    // Edit node
+    cy.nodes().on("dblclick", e => editNode(e.target));
+
+    // Create node
+    cy.on("dblclick", (e, rpos) => {
+      e.renderedPosition = rpos;
+      return e.target == cy ? createNode(e) : 0;
+    });
+  }
+}
 
 /** Handlers **/
 
@@ -74,9 +111,53 @@ function editNode(node) {
 
     saveButton.removeEventListener("click", _listener);
     closeModal(editModal);
+    updateListeners(node.cy());
   });
+
 }
 
+function createNode(event) {
+  // Get DOM elements
+  const createModal = document.getElementById("create-modal"),
+  nodeNameInput = document.getElementById("create-modal--node-title"),
+  saveButton = createModal.querySelector('.button.is-success'),
+  cy = event.target;
+
+  openModal(createModal);
+
+  // On save, create node and quite
+  saveButton.addEventListener("click", function _listener(evt) {
+    // Just close if title is empty
+    if (!nodeNameInput.value) return closeModal(createModal);
+
+    console.log(event);
+
+    cy.add({
+      group: 'nodes',
+      data: {
+        id: uuid(),
+        title: nodeNameInput.value
+      },
+      renderedPosition: {
+        x: event.renderedPosition.x,
+        y: event.renderedPosition.y,
+      }
+    });
+
+    nodeNameInput.value = "";
+    saveButton.removeEventListener("click", _listener);
+    closeModal(createModal);
+    updateListeners(cy);
+  });
+
+}
+
+function deleteNode(e, cy) {
+  if (e.code == "Delete") {
+    cy.remove(cy.$("*:selected"));
+  }
+  updateListeners(cy);
+}
 
 /** UTILS **/
 
@@ -88,6 +169,7 @@ function onGraphReady() {
   });
 }
 
+/*
 function snapToGrid(nodes, gridX, gridY) {
   // Snap nodes to grid
   nodes.forEach(node => {
@@ -101,6 +183,7 @@ function snapToGrid(nodes, gridX, gridY) {
     node.position(pos);
   });
 }
+*/
 
 function openModal(modal) {
   modal.classList.add('is-active');

@@ -55,7 +55,8 @@ module.exports.loadOdsToCyto = function(file, lineNb=412) {
         let connexion = {data: {
           id: anime.v + " to " + connectedAnime.v,
           source: animeId,
-          target: connectedAnimeId
+          target: connectedAnimeId,
+          type: "reference"
         }};
 
         // Check if connexion has already been made

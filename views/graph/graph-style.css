@@ -22,10 +22,36 @@ node:selected {
   background-color: #2d2d2d;
 }
 
+edge:selected {
+  background-color: #2d2d2d;
+}
+
+
 edge {
    width: 10;
    line-color: #ccc;
-   target-arrow-color: red;
+   curve-style: bezier;
+   target-arrow-color: #ccc;
    target-arrow-shape: triangle;
-   arrow-scale: 10;
+   arrow-scale: 2;
+}
+
+edge[type="series"] {
+  line-color: red;
+  target-arrow-color: red;
+}
+
+edge[type="reference"] {
+  line-color: blue;
+  target-arrow-color: blue;
+  line-style: dashed;
+  line-dash-pattern: 6;
+}
+
+edge[type="other"] {
+  line-color: green;
+  target-arrow-color: green;
+  line-style: dashed;
+  line-dash-pattern: 6;
+  arrow-scale: 0;
 }
